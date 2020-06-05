@@ -1,9 +1,19 @@
 ﻿# coding: utf-8
 
 import socket
+from fcntl import ioctl
+from struct import pack
+
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        pack('256s', bytes(ifname[:15], 'utf-8'))
+    )[20:24])
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind((socket.gethostbyname(socket.gethostname()), 0))
+sock.bind((get_ip_address("eth0"), 0))
 sock.setblocking(True)
 server = ("192.168.0.17", 9002)
 
