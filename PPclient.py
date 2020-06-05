@@ -1,7 +1,6 @@
 ﻿# coding: utf-8
 
 import socket
-import time
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((socket.gethostbyname(socket.gethostname()), 0))
